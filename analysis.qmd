@@ -1,0 +1,18 @@
+---
+title: "Class Size"
+author: "Lela Sengupta"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+```
+
+```{r}
+class <- read_csv("data/STAR.csv")
+```
+
