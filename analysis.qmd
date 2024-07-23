@@ -10,9 +10,50 @@ execute:
 #| label: setup
 #| message: false
 library(tidyverse)
+library(brms)
+library(tidybayes)
 ```
 
 ```{r}
-class <- read_csv("data/STAR.csv")
+#| message: false
+class <- read_csv("STAR.csv")
+
+class_1 <- class |>
+  select(g4math, classtype, race) |>
+  drop_na()
 ```
+
+Question?
+What is the causal effect of elementary school class size on current grade 4 math scores in the Southern US? 
+
+Quantity of interest?
+causal effect of class size on grade 4 math scores 
+
+Preceptor Table 
+units: individual elementary school students in the south
+outcome: grade 4 math score 
+covariates: class size, race, years in class type
+treatment: causal model - class size 
+
+population table: 
+units: individual students in the US
+source: 
+time: 1970-2030
+potential outcomes: math score for small class, math score for large class 
+treatment: class size (small or large)
+covariates: class size, race, years in class type
+
+counterarguments for each: 
+validity: 
+Teachers may have inflated scores to make their classes look better. 
+
+stability:
+The test content and the school curriculum may have changed over time. 
+
+representativeness: 
+Because these scores are from Tennessee, they may not be reflective of all school districts within the southern US.
+
+unconfoundedness: 
+Certain districts may have received priority for small classes. 
+
 
