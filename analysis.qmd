@@ -17,6 +17,8 @@ library(gtsummary)
 
 ```{r}
 #| label: load_data
+#| message: false
+#| warning: false
 class <- read_csv("STAR.csv", show_col_types = FALSE) 
 
 class <- class %>%
@@ -52,21 +54,30 @@ fit_class <- brm(formula = g4math ~ kinder,
 ```{r}
 #| label: plot
 #| message: false
+#| warning: false
 
 fit_class |> 
-  add_predicted_draws(newdata = tibble(kinder = c("regular", "small"))) |> 
-  ggplot(aes(x = .prediction)) +
-  geom_histogram(aes(y = after_stat(count/sum(count))),
-                 bins = 100)
+  add_epred_draws(newdata = tibble(kinder = c("regular", "small"))) |> 
+  ggplot(aes(x = .epred, fill = kinder)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Posterior for Math Exam Score",
+       subtitle = "Class size has no effect on score",
+       x = "Score",
+       y = NULL)
+
 ```
 
+
+Using data from the Tennessee STAR Project, starting in 1985, we seek to understand the causal effect of class size on math test scores for current elementary school students in the Southern US. Tested content and school curriculums may have changed between 1985 and 2024. We created a gaussian model which details the expected math test score based on whether a student was in a large or small class. The estimated score for small classes was about 709, with a 95% confidence interval between 706 and 712. For large classes, the estimated score was also about 709, with a 95% confidence interval between 703 and 71. Score differences between small and large classes are not significant enough to assume causality.
+
+$$ score_i = \beta_0 + \beta_1 (class\_size) $$
 
 ```{r}
+#| warning: false
 tbl_regression(fit_class)
-
-fixef(fit_class)
 ```
 
-`
+
+
 
 
